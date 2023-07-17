@@ -14,7 +14,6 @@ package rand_test
 import (
 	"flag"
 	"fmt"
-	. "pgregory.net/rand"
 	"reflect"
 	"testing"
 )
@@ -28,7 +27,7 @@ func TestRegress(t *testing.T) {
 	if *skipregress {
 		t.Skip("-skipregress specified")
 	}
-
+	
 	var int32s = []int32{1, 10, 32, 1 << 20, 1<<20 + 1, 1000000000, 1 << 30, 1<<31 - 2, 1<<31 - 1}
 	var uint32s = []uint32{1, 10, 32, 1 << 20, 1<<20 + 1, 1000000000, 1 << 30, 1<<31 - 2, 1<<31 - 1, 1<<32 - 2, 1<<32 - 1}
 	var int64s = []int64{1, 10, 32, 1 << 20, 1<<20 + 1, 1000000000, 1 << 30, 1<<31 - 2, 1<<31 - 1, 1000000000000000000, 1 << 60, 1<<63 - 2, 1<<63 - 1}
@@ -37,7 +36,7 @@ func TestRegress(t *testing.T) {
 	var readBufferSizes = []int{0, 1, 7, 8, 9, 10}
 	var shuffleSliceSizes = []int{0, 1, 7, 8, 9, 10, 239}
 	r := New(0)
-
+	
 	rv := reflect.ValueOf(r)
 	n := rv.NumMethod()
 	p := 0
@@ -66,7 +65,7 @@ func TestRegress(t *testing.T) {
 				switch mt.In(0).Kind() {
 				default:
 					t.Fatalf("unexpected argument type for r.%s", m.Name)
-
+				
 				case reflect.Int:
 					if m.Name == "Perm" {
 						x = permSizes[repeat%len(permSizes)]
@@ -82,19 +81,19 @@ func TestRegress(t *testing.T) {
 						continue
 					}
 					x = int(big)
-
+				
 				case reflect.Int32:
 					x = int32s[repeat%len(int32s)]
-
+				
 				case reflect.Uint32:
 					x = uint32s[repeat%len(uint32s)]
-
+				
 				case reflect.Int64:
 					x = int64s[repeat%len(int64s)]
-
+				
 				case reflect.Uint64:
 					x = uint64s[repeat%len(uint64s)]
-
+				
 				case reflect.Slice:
 					if m.Name == "Read" {
 						n := readBufferSizes[repeat%len(readBufferSizes)]
@@ -104,7 +103,7 @@ func TestRegress(t *testing.T) {
 				argstr = fmt.Sprint(x)
 				args = append(args, reflect.ValueOf(x))
 			}
-
+			
 			ret := mv.Call(args)
 			if m.Name == "Shuffle" {
 				continue // we only run Shuffle for the side effects

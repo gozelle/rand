@@ -10,6 +10,7 @@ import (
 	"encoding/binary"
 	"flag"
 	"fmt"
+	"github.com/gozelle/rand"
 	"github.com/valyala/fastrand"
 	exprand "golang.org/x/exp/rand"
 	"hash/maphash"
@@ -18,7 +19,6 @@ import (
 	"math/bits"
 	mathrand "math/rand"
 	"os"
-	"pgregory.net/rand"
 )
 
 const (
@@ -182,7 +182,7 @@ func run(gen string, transform string, shuffle string) error {
 	default:
 		return fmt.Errorf("unknown RNG: %q", gen)
 	}
-
+	
 	s := new(maphash.Hash).Sum64()
 	rng := func(s uint64) *rand64 { return &rand64{ctor(s)} }
 	var g func() uint64
@@ -210,7 +210,7 @@ func run(gen string, transform string, shuffle string) error {
 	default:
 		return fmt.Errorf("unknown transform: %q", transform)
 	}
-
+	
 	buf := make([]byte, 8*bufSizeWords)
 	switch shuffle {
 	case "none":
@@ -247,7 +247,7 @@ func output(buf []byte, g func() uint64, b func(func() uint64, uint16) uint16) e
 				shuffleBits(ch, g, b)
 			}
 		}
-
+		
 		_, err := os.Stdout.Write(buf)
 		if err != nil {
 			return err
@@ -262,7 +262,7 @@ func main() {
 		shuffle   = flag.String("shuffle", "none", "shuffle algorithm to use (none/mod/fp/lfp/lemire)")
 	)
 	flag.Parse()
-
+	
 	err := run(*gen, *transform, *shuffle)
 	if err != nil {
 		log.Fatal(err.Error())

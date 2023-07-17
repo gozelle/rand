@@ -2,7 +2,7 @@
 
 Fast, high quality alternative to `math/rand` and `golang.org/x/exp/rand`.
 
-Compared to these packages, `pgregory.net/rand`:
+Compared to these packages, `github.com/gozelle/rand`:
 
 - is API-compatible with all `*rand.Rand` methods and all top-level functions except `Seed()`,
 - is significantly faster, while improving the generator quality,
@@ -203,16 +203,16 @@ Very fast, but relatively new and untested. Also, no guarantees about the period
 
 ## Status
 
-`pgregory.net/rand` is stable. In addition to API stability, deterministic pseudo-random
+`github.com/gozelle/rand` is stable. In addition to API stability, deterministic pseudo-random
 generation produces the same results on 32-bit and 64-bit architectures, both little-endian
 and big-endian. Any observable change to these results would only occur together
 with a major version bump.
 
 ## License
 
-`pgregory.net/rand` is licensed under the [Mozilla Public License Version 2.0](./LICENSE). 
+`github.com/gozelle/rand` is licensed under the [Mozilla Public License Version 2.0](./LICENSE). 
 
-[godev-img]: https://pkg.go.dev/badge/pgregory.net/rand
-[godev]: https://pkg.go.dev/pgregory.net/rand
+[godev-img]: https://pkg.go.dev/badge/github.com/gozelle/rand
+[godev]: https://pkg.go.dev/github.com/gozelle/rand
 [ci-img]: https://github.com/flyingmutant/rand/workflows/CI/badge.svg
 [ci]: https://github.com/flyingmutant/rand/actions

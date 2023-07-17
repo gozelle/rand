@@ -7,9 +7,9 @@
 package rand_test
 
 import (
+	"github.com/gozelle/rand"
 	"math"
 	"math/bits"
-	"pgregory.net/rand"
 	"pgregory.net/rapid"
 	"sync/atomic"
 	"testing"

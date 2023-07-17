@@ -8,9 +8,9 @@ package rand_test
 
 import (
 	"bytes"
+	"github.com/gozelle/rand"
 	"math"
 	"math/bits"
-	"pgregory.net/rand"
 	"pgregory.net/rapid"
 	"testing"
 )
@@ -144,14 +144,14 @@ func TestRand_Uint32nOpt(t *testing.T) {
 	rapid.Check(t, func(t *rapid.T) {
 		n := rapid.Uint32().Draw(t, "n").(uint32)
 		v := rapid.Uint64().Draw(t, "v").(uint64)
-
+		
 		res, frac := bits.Mul32(n, uint32(v>>32))
 		hi, _ := bits.Mul32(n, uint32(v))
 		_, carry := bits.Add32(frac, hi, 0)
 		res += carry
-
+		
 		res2, _ := bits.Mul64(uint64(n), v)
-
+		
 		if uint32(res2) != res {
 			t.Fatalf("got %v instead of %v", res2, res)
 		}

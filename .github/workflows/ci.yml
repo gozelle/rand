@@ -23,13 +23,13 @@ jobs:
         run: test -z "$(go fmt ./...)"
         shell: bash
 
-      - name: Test pgregory.net/rand
+      - name: Test github.com/gozelle/rand
         run: go test
 
       - name: Test practrand utility
         run: go test ./misc/practrand
 
-      - name: Bench pgregory.net/rand
+      - name: Bench github.com/gozelle/rand
         run: go test -run=Benchmark -bench=.
 
       - name: Bench math/rand

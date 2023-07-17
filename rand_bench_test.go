@@ -9,8 +9,8 @@
 package rand_test
 
 import (
+	"github.com/gozelle/rand"
 	"math"
-	"pgregory.net/rand"
 	"testing"
 )
 

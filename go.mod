@@ -1,4 +1,4 @@
-module pgregory.net/rand
+module github.com/gozelle/rand
 
 go 1.18
 

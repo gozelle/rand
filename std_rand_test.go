@@ -12,7 +12,6 @@ import (
 	"io"
 	"math"
 	"os"
-	. "pgregory.net/rand"
 	"runtime"
 	"testing"
 	"testing/iotest"
@@ -120,17 +119,17 @@ func generateNormalSamples(nsamples int, mean, stddev float64, seed int64) []flo
 
 func testNormalDistribution(t *testing.T, nsamples int, mean, stddev float64, seed int64) {
 	//fmt.Printf("testing nsamples=%v mean=%v stddev=%v seed=%v\n", nsamples, mean, stddev, seed);
-
+	
 	samples := generateNormalSamples(nsamples, mean, stddev, seed)
 	errorScale := max(1.0, stddev) // Error scales with stddev
 	expected := &statsResults{mean, stddev, 0.10 * errorScale, 0.08 * errorScale}
-
+	
 	// Make sure that the entire set matches the expected distribution.
 	checkSampleDistribution(t, samples, expected)
-
+	
 	// Make sure that each half of the set matches the expected distribution.
 	checkSampleSliceDistributions(t, samples, 2, expected)
-
+	
 	// Make sure that each 7th of the set matches the expected distribution.
 	checkSampleSliceDistributions(t, samples, 7, expected)
 }
@@ -177,20 +176,20 @@ func generateExponentialSamples(nsamples int, rate float64, seed int64) []float6
 
 func testExponentialDistribution(t *testing.T, nsamples int, rate float64, seed int64) {
 	//fmt.Printf("testing nsamples=%v rate=%v seed=%v\n", nsamples, rate, seed);
-
+	
 	mean := 1 / rate
 	stddev := mean
-
+	
 	samples := generateExponentialSamples(nsamples, rate, seed)
 	errorScale := max(1.0, 1/rate) // Error scales with the inverse of the rate
 	expected := &statsResults{mean, stddev, 0.10 * errorScale, 0.20 * errorScale}
-
+	
 	// Make sure that the entire set matches the expected distribution.
 	checkSampleDistribution(t, samples, expected)
-
+	
 	// Make sure that each half of the set matches the expected distribution.
 	checkSampleSliceDistributions(t, samples, 2, expected)
-
+	
 	// Make sure that each 7th of the set matches the expected distribution.
 	checkSampleSliceDistributions(t, samples, 7, expected)
 }
@@ -227,11 +226,11 @@ func initNorm() (testKn []uint64, testWn, testFn []float64) {
 		dn = rn
 		tn = dn
 	)
-
+	
 	testKn = make([]uint64, 256)
 	testWn = make([]float64, 256)
 	testFn = make([]float64, 256)
-
+	
 	q := vn / math.Exp(-0.5*dn*dn)
 	testKn[0] = uint64((dn / q) * m1)
 	testKn[1] = 0
@@ -258,11 +257,11 @@ func initExp() (testKe []uint64, testWe, testFe []float64) {
 		de = re
 		te = de
 	)
-
+	
 	testKe = make([]uint64, 256)
 	testWe = make([]float64, 256)
 	testFe = make([]float64, 256)
-
+	
 	q := ve / math.Exp(-de)
 	testKe[0] = uint64((de / q) * m2)
 	testKe[1] = 0
@@ -324,7 +323,7 @@ func TestNormTables(t *testing.T) {
 		fmt.Printf("var fn = %#v\n", testFn)
 		return
 	}
-
+	
 	if i := compareUint64Slices(kn[0:], testKn); i >= 0 {
 		t.Errorf("kn disagrees at index %v; %v != %v", i, kn[i], testKn[i])
 	}
@@ -344,7 +343,7 @@ func TestExpTables(t *testing.T) {
 		fmt.Printf("var fe = %#v\n", testFe)
 		return
 	}
-
+	
 	if i := compareUint64Slices(ke[0:], testKe); i >= 0 {
 		t.Errorf("ke disagrees at index %v; %v != %v", i, ke[i], testKe[i])
 	}
@@ -378,7 +377,7 @@ func TestFloat32_6721(t *testing.T) {
 	if testing.Short() && hasSlowFloatingPoint() {
 		num /= 100 // 1.72 seconds instead of 172 seconds
 	}
-
+	
 	r := New(1)
 	for ct := 0; ct < num; ct++ {
 		f := r.Float32()
@@ -398,16 +397,16 @@ func testReadUniformity(t *testing.T, n int, seed int64) {
 	if nRead != n {
 		t.Errorf("Read returned unexpected n; %d != %d", nRead, n)
 	}
-
+	
 	// Expect a uniform distribution of byte values, which lie in [0, 255].
 	var (
 		mean       = 255.0 / 2
 		stddev     = 256.0 / math.Sqrt(12.0)
 		errorScale = stddev / math.Sqrt(float64(n))
 	)
-
+	
 	expected := &statsResults{mean, stddev, 0.10 * errorScale, 0.08 * errorScale}
-
+	
 	// Cast bytes as floats to use the common distribution-validity checks.
 	samples := make([]float64, n)
 	for i, val := range buf {
@@ -521,7 +520,7 @@ func TestUniformFactorial(t *testing.T) {
 			for i := 2; i <= n; i++ {
 				nfact *= i
 			}
-
+			
 			// Test a few different ways to generate a uniform distribution.
 			p := make([]int, n) // re-usable slice for Shuffle generator
 			tests := [...]struct {
@@ -551,7 +550,7 @@ func TestUniformFactorial(t *testing.T) {
 					return encodePerm(p)
 				}},
 			}
-
+			
 			for _, test := range tests {
 				t.Run(test.name, func(t *testing.T) {
 					// Gather chi-squared values and check that they follow
@@ -580,7 +579,7 @@ func TestUniformFactorial(t *testing.T) {
 						χ2 /= want
 						samples[i] = χ2
 					}
-
+					
 					// Check that our samples approximate the appropriate normal distribution.
 					dof := float64(nfact - 1)
 					expected := &statsResults{mean: dof, stddev: math.Sqrt(2 * dof)}

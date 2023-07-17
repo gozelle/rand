@@ -9,9 +9,9 @@ package rand_test
 import (
 	"flag"
 	"fmt"
+	"github.com/gozelle/rand"
 	"math"
 	"math/bits"
-	"pgregory.net/rand"
 	"testing"
 )
 
@@ -73,11 +73,11 @@ func TestRand_Uint16nBias_Lemire(t *testing.T)       { testRandUint16nBias(t, ui
 
 func testRandUint16nBias(t *testing.T, gen func(*rand.Rand, uint16) uint16) {
 	t.Helper()
-
+	
 	if !*biasFlag {
 		t.Skip("specify -bias flag to run bias tests")
 	}
-
+	
 	const bound = math.MaxUint16 / 4 * 3
 	for pow := 10; pow <= 50; pow++ {
 		t.Run(fmt.Sprintf("%d/%dbit", bound, pow), func(t *testing.T) {
@@ -88,7 +88,7 @@ func testRandUint16nBias(t *testing.T, gen func(*rand.Rand, uint16) uint16) {
 				ix := gen(r, bound)
 				data[ix]++
 			}
-
+			
 			var chiSq float64
 			expected := float64(attempts) / float64(bound)
 			for _, n := range data {
@@ -96,7 +96,7 @@ func testRandUint16nBias(t *testing.T, gen func(*rand.Rand, uint16) uint16) {
 				chiSq += (obs - expected) * (obs - expected)
 			}
 			chiSq /= expected
-
+			
 			df := float64(bound - 1)
 			t.Logf("χ2 = %.1f, DoF = %v (%v attempts, delta = %.1f%%)", chiSq, df, attempts, (chiSq-df)/df*100)
 		})

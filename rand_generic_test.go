@@ -10,7 +10,7 @@ package rand_test
 
 import (
 	"bytes"
-	"pgregory.net/rand"
+	"github.com/gozelle/rand"
 	"pgregory.net/rapid"
 	"testing"
 )
