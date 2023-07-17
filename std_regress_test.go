@@ -14,6 +14,7 @@ package rand_test
 import (
 	"flag"
 	"fmt"
+	"github.com/gozelle/rand"
 	"reflect"
 	"testing"
 )
@@ -35,7 +36,7 @@ func TestRegress(t *testing.T) {
 	var permSizes = []int{0, 1, 5, 8, 9, 10, 16}
 	var readBufferSizes = []int{0, 1, 7, 8, 9, 10}
 	var shuffleSliceSizes = []int{0, 1, 7, 8, 9, 10, 239}
-	r := New(0)
+	r := rand.New(0)
 	
 	rv := reflect.ValueOf(r)
 	n := rv.NumMethod()
